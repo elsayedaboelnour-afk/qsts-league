@@ -119,9 +119,43 @@ main{min-height:0;position:relative;
 /* matches view */
 .two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,1.6vw,24px);min-height:100%}
 .rounds{padding:4px 16px 10px}
-.round{display:grid;grid-template-columns:5.2em 1fr;gap:6px 12px;align-items:center;padding:clamp(4px,.9vh,8px) 0;border-top:1px solid var(--line)}
+.round{display:grid;grid-template-columns:9.5em 1fr;gap:6px 12px;align-items:center;padding:clamp(4px,.9vh,8px) 0;border-top:1px solid var(--line)}
 .round:first-child{border-top:0}
-.rn{font-weight:700;color:var(--maroon);font-size:clamp(13px,1.8vh,16px)}
+.rn{font-weight:700;color:var(--maroon);font-size:clamp(13px,1.8vh,16px);display:flex;flex-direction:column;gap:3px}
+.rn small{color:var(--muted);font-weight:600;font-size:.82em}
+.dt{font:inherit;font-size:13px;font-weight:600;color:var(--ink);background:var(--bg);border:1px solid var(--line-2);border-radius:8px;padding:3px 6px;width:100%;max-width:9em}
+.kh .dt{width:auto}
+.dtl{color:var(--indigo);font-weight:700}
+/* match filter */
+.mbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:clamp(8px,1.4vh,14px)}
+.chipf{border:1px solid var(--line-2);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 16px;font-weight:700;font-size:clamp(13px,1.8vh,16px);cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.chipf b{background:var(--bg);border-radius:999px;min-width:1.7em;padding:0 6px;font-variant-numeric:tabular-nums}
+.chipf[aria-pressed="true"]{background:var(--indigo);border-color:var(--indigo);color:#fff}
+.chipf[aria-pressed="true"] b{background:rgba(255,255,255,.2)}
+.mbar .hint{color:var(--muted);font-size:13px;margin-inline-start:auto}
+.days{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(560px,100%),1fr));gap:clamp(12px,1.6vw,24px);align-items:start}
+.day.today{border-color:var(--maroon);box-shadow:0 0 0 3px var(--maroon-tint)}
+.dlist{padding:6px 16px 12px;display:flex;flex-direction:column}
+.dm{padding:clamp(6px,1.1vh,10px) 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+.dm:first-child{border-top:0}
+.gtag{font-size:clamp(12px,1.6vh,14px);font-weight:700;color:var(--muted)}
+.gtag i{font-style:normal;color:var(--maroon)}
+.nodays{background:var(--card);border:1px dashed var(--line-2);border-radius:14px;padding:clamp(24px,6vh,60px) 16px;text-align:center;color:var(--muted);font-weight:600;font-size:clamp(16px,2.3vh,21px)}
+.nodays img{width:clamp(60px,10vh,100px);display:block;margin:0 auto 10px;opacity:.85}
+.nodays b{color:var(--ink)}
+/* cards */
+.yc,.rc{display:inline-block;width:.72em;height:.98em;border-radius:2px;vertical-align:-.12em;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.yc{background:#f2c200}.rc{background:#d7263d}
+.cd-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:clamp(12px,1.6vw,24px);align-items:start;min-height:100%}
+.cd-side{display:flex;flex-direction:column;gap:clamp(12px,1.6vw,24px);min-width:0}
+td.cc{font-weight:800;font-size:clamp(16px,2.4vh,22px)}
+tr.sent td{background:#fdecee}
+.fp td.pts{color:var(--ink)}
+.addf .kind{display:flex;gap:10px}
+.addf .kind label{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line-2);border-radius:10px;padding:10px;cursor:pointer;font-size:16px;color:var(--ink);background:var(--bg)}
+.addf .kind input{width:auto}
+.addf .kind label:has(input:checked){border-color:var(--maroon);box-shadow:0 0 0 2px var(--maroon-tint);background:var(--card)}
+.ro .stepper .cst{display:none}
 .rmatches{display:flex;flex-direction:column;gap:clamp(3px,.6vh,6px);min-width:0}
 .m{display:grid;grid-template-columns:1fr auto auto auto 1fr;align-items:center;gap:8px;font-weight:700;font-size:clamp(13px,1.9vh,17px)}
 .m .ta{text-align:left;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -231,7 +265,8 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
   .top-in{grid-template-columns:1fr 1fr}.ttl{grid-column:1/-1;grid-row:2;justify-content:center}
   .view{height:auto;overflow:visible}
   .arena{grid-template-columns:1fr 1fr;height:auto}.stage{grid-column:1/-1;order:-1}.reveal{min-height:220px}.slot{min-height:56px}
-  .two,.fields,.ko,.sc-grid{grid-template-columns:1fr}
+  .two,.fields,.ko,.sc-grid,.cd-grid{grid-template-columns:1fr}
+  .round{grid-template-columns:7.5em 1fr}
 }
 @media (max-width:560px){.arena{grid-template-columns:1fr}.ball{--sz:52px}.savebox{margin-inline-start:0}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -255,6 +290,7 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
       <button class="tab" role="tab" data-tab="table">الترتيب</button>
       <button class="tab" role="tab" data-tab="ko">المربع الذهبي والنهائي</button>
       <button class="tab" role="tab" data-tab="scorers">الهدافون</button>
+      <button class="tab" role="tab" data-tab="cards">الإنذارات</button>
     </div>
     <div class="savebox">
       <span class="status" id="status"></span>
@@ -289,6 +325,7 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
     <section class="view gut" id="v-table" hidden></section>
     <section class="view gut" id="v-ko" hidden></section>
     <section class="view gut" id="v-scorers" hidden></section>
+    <section class="view gut" id="v-cards" hidden></section>
   </main>
 
   <nav class="toolbar gut" id="toolbar" aria-label="أدوات القرعة">
@@ -394,7 +431,7 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
 
   function norm(o){
     if(!o||typeof o!=="object")o={};
-    o.v=1;o.names=o.names||{};o.groups=Array.isArray(o.groups)&&o.groups.length===2?o.groups:[[],[]];o.balls=o.balls||{};o.results=o.results||{};o.scorers=Array.isArray(o.scorers)?o.scorers:[];
+    o.v=1;o.names=o.names||{};o.groups=Array.isArray(o.groups)&&o.groups.length===2?o.groups:[[],[]];o.balls=o.balls||{};o.results=o.results||{};o.scorers=Array.isArray(o.scorers)?o.scorers:[];o.cards=Array.isArray(o.cards)?o.cards:[];o.dates=o.dates&&typeof o.dates==="object"?o.dates:{};
     return o;
   }
   let S;try{S=JSON.parse(document.getElementById("state").textContent)}catch(e){S=null}
@@ -632,15 +669,68 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
   const scInput=(id,side,val)=>`<input class="sc" type="number" inputmode="numeric" min="0" max="99" data-m="${id}" data-s="${side}" value="${Number.isInteger(val)?val:""}" aria-label="أهداف" ${canWrite()?"":"disabled"}>`;
   function emptyView(msg){return `<div class="empty"><div><img src="${BALL}" alt="">${msg}</div></div>`}
 
+  /* ---------- dates ---------- */
+  const pad=n=>String(n).padStart(2,"0");
+  const iso=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  const todayISO=()=>iso(new Date());
+  function weekRange(){const s=new Date();s.setHours(0,0,0,0);s.setDate(s.getDate()-s.getDay());const e=new Date(s);e.setDate(s.getDate()+6);return [iso(s),iso(e)]} // Sunday to Saturday
+  function fmtDay(s){try{const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d).toLocaleDateString("ar-QA-u-nu-latn",{weekday:"long",day:"numeric",month:"long"})}catch(e){return s}}
+  const validDate=s=>typeof s==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(s);
+  function dateCtl(key,cls){
+    const d=S.dates[key];
+    if(canWrite())return `<input type="date" class="dt ${cls||""}" data-d="${key}" value="${validDate(d)?d:""}" aria-label="تاريخ المباراة">`;
+    return validDate(d)?`<small class="dtl">${fmtDay(d)}</small>`:"";
+  }
+  const KO=[["sf1","نصف النهائي الأول",["أول المجموعة الأولى","ثاني المجموعة الثانية"]],["sf2","نصف النهائي الثاني",["أول المجموعة الثانية","ثاني المجموعة الأولى"]],
+    ["third","مباراة المركز الثالث",["الخاسر من نصف النهائي الأول","الخاسر من نصف النهائي الثاني"]],["fin","المباراة النهائية",["الفائز من نصف النهائي الأول","الفائز من نصف النهائي الثاني"]]];
+  function scheduled(){
+    const out=[];
+    if(drawDone())[0,1].forEach(gi=>fixtures(gi).forEach(r=>{const d=S.dates[`g${gi}r${r.r}`];if(validDate(d))r.ms.forEach(m=>out.push({d,tag:`<i>${GN[gi]}</i> · الجولة ${r.r+1}`,id:m.id,h:m.h,a:m.a}))}));
+    const K=koTeams();
+    KO.forEach(([key,title,sub])=>{const d=S.dates[key];if(validDate(d)){const p=K[key];out.push({d,tag:`<i>${title}</i>`,id:key,h:p[0],a:p[1],sub})}});
+    return out.sort((x,y)=>x.d.localeCompare(y.d));
+  }
+  let mFilter="all";try{mFilter=sessionStorage.getItem("qsts7-mf")||"all"}catch(e){}
+  function mRow(id,h,a,sub){
+    const x=res(id),p=played(id),wh=p&&x.h>x.a,wa=p&&x.a>x.h,ready=h&&a;
+    const side=(t,i)=>t?label(T(t)):`<span class="tbd" style="color:var(--muted);font-weight:500">${sub?sub[i]:""}</span>`;
+    return `<div class="m"><span class="tb ${wh?"win":""}">${side(h,0)}</span>${ready?scInput(id,"h",x.h):"<span></span>"}<span class="dash">–</span>${ready?scInput(id,"a",x.a):"<span></span>"}<span class="ta ${wa?"win":""}">${side(a,1)}</span></div>`;
+  }
   function renderMatches(){
     const v=$("v-matches");
     if(!drawDone()){v.innerHTML=emptyView("تظهر المباريات بعد اكتمال القرعة");return}
-    v.innerHTML=`<div class="two">`+[0,1].map(gi=>`<section class="card"><div class="c-head"><h2>${GN[gi]}</h2><span class="g-badge ${gi?"b2":""}">${gi+1}</span></div><div class="rounds">`+
-      fixtures(gi).map(r=>`<div class="round"><span class="rn">الجولة ${r.r+1}</span><div class="rmatches">`+
-        r.ms.map(m=>{const x=res(m.id),p=played(m.id);const wh=p&&x.h>x.a,wa=p&&x.a>x.h;
-          return `<div class="m"><span class="tb ${wh?"win":""}">${label(T(m.h))}</span>${scInput(m.id,"h",x.h)}<span class="dash">–</span>${scInput(m.id,"a",x.a)}<span class="ta ${wa?"win":""}">${label(T(m.a))}</span></div>`}).join("")+
-        (r.rest?`<span class="rest">يرتاح: ${label(T(r.rest))}</span>`:"")+`</div></div>`).join("")+`</div></section>`).join("")+`</div>`;
+    const all=scheduled(),today=todayISO(),[ws,we]=weekRange();
+    const nToday=all.filter(m=>m.d===today).length,nWeek=all.filter(m=>m.d>=ws&&m.d<=we).length;
+    const chip=(k,t,n)=>`<button class="chipf" data-f="${k}" aria-pressed="${mFilter===k}">${t}${n===null?"":` <b>${n}</b>`}</button>`;
+    const bar=`<div class="mbar">${chip("all","كل المباريات",null)}${chip("today","مباريات اليوم",nToday)}${chip("week","مباريات الأسبوع",nWeek)}`+
+      (canWrite()?`<span class="hint">حدّد تاريخ كل جولة من خانة التاريخ تحت رقمها</span>`:"")+`</div>`;
+    if(mFilter==="all"){
+      v.innerHTML=bar+`<div class="two">`+[0,1].map(gi=>`<section class="card"><div class="c-head"><h2>${GN[gi]}</h2><span class="g-badge ${gi?"b2":""}">${gi+1}</span></div><div class="rounds">`+
+        fixtures(gi).map(r=>`<div class="round"><span class="rn">الجولة ${r.r+1}${dateCtl(`g${gi}r${r.r}`)}</span><div class="rmatches">`+
+          r.ms.map(m=>mRow(m.id,m.h,m.a)).join("")+
+          (r.rest?`<span class="rest">يرتاح: ${label(T(r.rest))}</span>`:"")+`</div></div>`).join("")+`</div></section>`).join("")+`</div>`;
+      return;
+    }
+    const list=mFilter==="today"?all.filter(m=>m.d===today):all.filter(m=>m.d>=ws&&m.d<=we);
+    if(!list.length){
+      const next=all.find(m=>m.d>today);
+      v.innerHTML=bar+`<div class="nodays"><img src="${BALL}" alt="">${mFilter==="today"?"لا توجد مباريات اليوم":"لا توجد مباريات هذا الأسبوع"}`+
+        (next?`<div style="margin-top:8px">أقرب مباراة: <b>${fmtDay(next.d)}</b></div>`:(all.length?"":`<div style="margin-top:8px;font-size:.85em">لم تُحدَّد مواعيد المباريات بعد</div>`))+`</div>`;
+      return;
+    }
+    const byDay={};list.forEach(m=>(byDay[m.d]=byDay[m.d]||[]).push(m));
+    v.innerHTML=bar+`<div class="days">`+Object.keys(byDay).sort().map(d=>`<section class="card day ${d===today?"today":""}"><div class="c-head"><h2>${fmtDay(d)}</h2><span class="g-count">${d===today?"اليوم":byDay[d].length+" مباريات"}</span></div><div class="dlist">`+
+      byDay[d].map(m=>`<div class="dm"><span class="gtag">${m.tag}</span>${mRow(m.id,m.h,m.a,m.sub)}</div>`).join("")+`</div></section>`).join("")+`</div>`;
   }
+  document.addEventListener("click",e=>{
+    const c=e.target.closest&&e.target.closest(".chipf");if(!c)return;
+    mFilter=c.dataset.f;try{sessionStorage.setItem("qsts7-mf",mFilter)}catch(err){}renderMatches();
+  });
+  document.addEventListener("change",e=>{
+    const el=e.target;if(!el.classList||!el.classList.contains("dt")||!canWrite())return;
+    const k=el.dataset.d;if(validDate(el.value))S.dates[k]=el.value;else delete S.dates[k];
+    changed();if(tab==="matches")renderMatches();
+  });
   function renderTable(){
     const v=$("v-table");
     if(!drawDone()){v.innerHTML=emptyView("يظهر الترتيب بعد اكتمال القرعة");return}
@@ -655,7 +745,7 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
     const [h,a]=pair,x=res(key),p=played(key),w=koWinner(key,h,a),tie=p&&x.h===x.a,ready=h&&a;
     const row=(id,side,ps)=>{const t=id&&T(id);return `<div class="kr ${w&&w===id?"w":""}"><span class="tn">${t?label(t):`<span class="tbd">${sub[side==="h"?0:1]}</span>`}</span>`+
       (ready?scInput(key,side,x[side]):`<span></span>`)+(ready&&tie?`<input class="sc pk" type="number" inputmode="numeric" min="0" max="99" data-m="${key}" data-s="${ps}" value="${Number.isInteger(x[ps])?x[ps]:""}" aria-label="ركلات الترجيح" ${canWrite()?"":"disabled"}>`:`<span></span>`)+`</div>`};
-    return `<section class="card km"><div class="kh"><span>${title}</span>${ready&&tie?`<span>ركلات الترجيح ←</span>`:""}</div>${row(h,"h","ph")}${row(a,"a","pa")}</section>`;
+    return `<section class="card km"><div class="kh"><span>${title}</span>${ready&&tie?`<span>ركلات الترجيح ←</span>`:dateCtl(key)}</div>${row(h,"h","ph")}${row(a,"a","pa")}</section>`;
   }
   function renderKO(){
     const v=$("v-ko"),K=koTeams(),champ=K.champ&&T(K.champ);
@@ -722,7 +812,7 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
     });
   }
   document.addEventListener("click",e=>{
-    const b=e.target.closest&&e.target.closest(".stp");if(!b||!canWrite())return;
+    const b=e.target.closest&&e.target.closest(".stp");if(!b||b.classList.contains("cst")||!canWrite())return;
     const p=S.scorers.find(x=>x.id===b.dataset.id);if(!p)return;
     if(b.dataset.act==="inc")p.g=Math.min(99,p.g+1);
     else if(b.dataset.act==="dec")p.g=Math.max(0,p.g-1);
@@ -733,11 +823,63 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
     renderScorers();changed();
   });
 
+  /* ---------- yellow and red cards ---------- */
+  let cdelArmed=null;
+  function renderCards(){
+    const v=$("v-cards"),w=canWrite();
+    const L=S.cards.slice().sort((a,b)=>(b.r-a.r)||(b.y-a.y)||a.n.localeCompare(b.n,"ar"));
+    const teamOpts=ALL.map(t=>`<option value="${t.id}">${t.cls} ${t.sec}${nm(t)?" — "+esc(nm(t)):""}</option>`).join("");
+    const ty=L.reduce((s,p)=>s+p.y,0),tr=L.reduce((s,p)=>s+p.r,0);
+    const step=(p,k)=>`<span class="stepper">`+(w?`<button class="stp cst" data-act="dec" data-k="${k}" data-id="${p.id}" aria-label="إنقاص">−</button>`:"")+`<span>${p[k]}</span>`+(w?`<button class="stp cst" data-act="inc" data-k="${k}" data-id="${p.id}" aria-label="إضافة">+</button>`:"")+`</span>`;
+    const board=`<section class="card"><div class="c-head"><h2>إنذارات وطرد اللاعبين</h2><span class="g-count"><span class="yc"></span> ${ty} &nbsp; <span class="rc"></span> ${tr}</span></div>`+
+      (L.length?`<div class="tbl-wrap"><table><thead><tr><th style="text-align:right">اللاعب</th><th style="text-align:right">الفريق</th><th><span class="yc"></span> إنذار</th><th><span class="rc"></span> طرد</th>${w?"<th></th>":""}</tr></thead><tbody>`+
+        L.map(p=>`<tr class="${p.r>0?"sent":""}"><td class="pl">${esc(p.n)}</td><td class="team">${label(T(p.t))}</td><td class="cc">${step(p,"y")}</td><td class="cc">${step(p,"r")}</td>`+
+          (w?`<td><button class="stp cst del" data-act="del" data-id="${p.id}">حذف</button></td>`:"")+`</tr>`).join("")+`</tbody></table></div>`
+      :`<div class="empty" style="height:auto;padding:40px 10px"><div><img src="${BALL}" alt="">${w?"أضف أول إنذار من النموذج":"لا توجد إنذارات حتى الآن"}</div></div>`)+`</section>`;
+    // fair play: yellow = 1 point, red = 3 points, fewer is better
+    const tm={};S.cards.forEach(p=>{const x=tm[p.t]=tm[p.t]||{t:p.t,y:0,r:0};x.y+=p.y;x.r+=p.r});
+    const fp=Object.values(tm).filter(x=>x.y||x.r).map(x=>Object.assign(x,{pts:x.y+3*x.r})).sort((a,b)=>(b.pts-a.pts)||a.t.localeCompare(b.t));
+    const fair=`<section class="card fp"><div class="c-head"><h3>إنذارات الفرق</h3></div>`+
+      (fp.length?`<div class="tbl-wrap"><table><thead><tr><th style="text-align:right">الفريق</th><th><span class="yc"></span></th><th><span class="rc"></span></th><th>النقاط</th></tr></thead><tbody>`+
+        fp.map(x=>`<tr><td class="team">${label(T(x.t))}</td><td>${x.y}</td><td>${x.r}</td><td class="pts">${x.pts}</td></tr>`).join("")+
+        `</tbody></table></div><p class="rest" style="padding:0 16px 12px;margin:0">الإنذار بنقطة والطرد بثلاث نقاط. الأقل نقاطاً هو الأكثر انضباطاً.</p>`
+      :`<p class="rest" style="padding:16px;margin:0">لا توجد إنذارات مسجلة.</p>`)+`</section>`;
+    const form=w?`<section class="card"><div class="c-head"><h3>تسجيل إنذار أو طرد</h3></div><form class="addf" id="cardForm">
+      <div><label for="cName">اسم اللاعب</label><input id="cName" maxlength="40" required placeholder="مثال: محمد أحمد"></div>
+      <div><label for="cTeam">الفريق</label><select id="cTeam">${teamOpts}</select></div>
+      <div class="kind"><label><input type="radio" name="ck" value="y" checked><span class="yc"></span> إنذار</label><label><input type="radio" name="ck" value="r"><span class="rc"></span> طرد</label></div>
+      <button class="btn primary" type="submit">تسجيل</button>
+      <p class="hint">إذا كان اللاعب مسجلاً من قبل يُضاف الكارت إلى رصيده. يُحفظ كل تعديل تلقائياً.</p></form></section>`:"";
+    v.innerHTML=`<div class="cd-grid">${board}<div class="cd-side">${form}${fair}</div></div>`;
+    const fm=$("cardForm");
+    if(fm)fm.addEventListener("submit",e=>{
+      e.preventDefault();const n=$("cName").value.trim();if(!n)return;
+      const t=$("cTeam").value,k=(fm.querySelector("input[name=ck]:checked")||{}).value||"y";
+      let p=S.cards.find(x=>x.n===n&&x.t===t);
+      if(!p){p={id:"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,5),n,t,y:0,r:0};S.cards.push(p)}
+      p[k]=Math.min(99,p[k]+1);
+      renderCards();changed();const ct=$("cTeam");if(ct)ct.value=t;const cn=$("cName");if(cn)cn.focus();
+    });
+  }
+  document.addEventListener("click",e=>{
+    const b=e.target.closest&&e.target.closest(".cst");if(!b||!canWrite())return;
+    e.stopImmediatePropagation();
+    const p=S.cards.find(x=>x.id===b.dataset.id);if(!p)return;
+    const k=b.dataset.k;
+    if(b.dataset.act==="inc")p[k]=Math.min(99,p[k]+1);
+    else if(b.dataset.act==="dec")p[k]=Math.max(0,p[k]-1);
+    else if(b.dataset.act==="del"){
+      if(cdelArmed!==p.id){cdelArmed=p.id;b.textContent="تأكيد الحذف";b.classList.add("warn");setTimeout(()=>{if(cdelArmed===p.id){cdelArmed=null;b.textContent="حذف";b.classList.remove("warn")}},3000);return}
+      cdelArmed=null;S.cards=S.cards.filter(x=>x!==p);
+    }
+    renderCards();changed();
+  },true);
+
   /* ---------- tabs, render ---------- */
   function showTab(t){
     tab=t;document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
-    ["draw","matches","table","ko","scorers"].forEach(k=>$("v-"+k).hidden=k!==t);
-    if(t==="matches")renderMatches();if(t==="table")renderTable();if(t==="ko")renderKO();if(t==="scorers")renderScorers();
+    ["draw","matches","table","ko","scorers","cards"].forEach(k=>$("v-"+k).hidden=k!==t);
+    if(t==="matches")renderMatches();if(t==="table")renderTable();if(t==="ko")renderKO();if(t==="scorers")renderScorers();if(t==="cards")renderCards();
     refreshDraw();
   }
   function renderAll(){if(S.subtitle)$("subTitle").textContent=S.subtitle;if(!busy)renderDraw();showTab(tab);updateStatus()}
