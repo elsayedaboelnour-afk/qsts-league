@@ -159,6 +159,15 @@ tr.sent td{background:#fdecee}
 .rmatches{display:flex;flex-direction:column;gap:clamp(3px,.6vh,6px);min-width:0}
 .m{display:grid;grid-template-columns:1fr auto auto auto 1fr;align-items:center;gap:8px;font-weight:700;font-size:clamp(13px,1.9vh,17px)}
 .m.wd{grid-template-columns:8.6em 1fr auto auto auto 1fr}
+.rtable{overflow:hidden}
+.rt-row{display:grid;grid-template-columns:6.5em 1fr 1fr;align-items:center;gap:0;border-top:1px solid var(--line)}
+.rt-row>*{padding:clamp(5px,1vh,9px) 14px;min-width:0}
+.rt-row .rt-c+.rt-c{border-inline-start:1px solid var(--line)}
+.rt-head{border-top:0;background:linear-gradient(90deg,transparent,var(--indigo-tint));font-family:var(--display);font-weight:800;font-size:clamp(16px,2.5vh,24px)}
+.rt-head .rt-g{display:flex;align-items:center;gap:10px}
+.rt-head .g-badge{font-size:clamp(13px,2vh,18px)}
+.rt-n{font-weight:800;color:var(--maroon);font-size:clamp(13px,1.9vh,17px)}
+.rt-row.done .rt-n::after{content:" ✓";color:var(--ok)}
 .md{min-width:0}.md .dt{max-width:100%}
 .md small{font-size:.8em}
 .md .none{color:var(--line-2);font-weight:600;font-size:.8em}
@@ -281,6 +290,8 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
   .two,.fields,.ko,.sc-grid,.cd-grid{grid-template-columns:1fr}
   .round{grid-template-columns:4.2em 1fr}
   .m.wd{grid-template-columns:1fr auto auto auto 1fr}.m.wd .md{grid-column:1/-1}
+  .rt-row{grid-template-columns:1fr}.rt-head .rt-g{display:none}.rt-row .rt-c+.rt-c{border-inline-start:0}
+  .rt-c::before{content:attr(data-g);display:block;font-size:12px;color:var(--muted);font-weight:700;margin-bottom:4px}
 }
 @media (max-width:560px){.arena{grid-template-columns:1fr}.ball{--sz:52px}.savebox{margin-inline-start:0}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -427,7 +438,7 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
 <div class="overlay" id="schedBox" hidden role="dialog" aria-modal="true" aria-labelledby="scTitle">
   <div class="panel" style="width:min(640px,100%)">
     <h2 id="scTitle">جدولة المباريات تلقائياً</h2>
-    <p>مباراة واحدة في اليوم، وبحد أقصى مباراتين في الأسبوع. بعد الجدولة يمكنك تعديل تاريخ أي مباراة يدوياً.</p>
+    <p>كل جولة فيها مباراة واحدة من كل مجموعة. تُلعب مباراة المجموعة الأولى في اليوم الأول، ومباراة المجموعة الثانية في اليوم الثاني، فتكتمل الجولة في أسبوع واحد. بعد الجدولة يمكنك تعديل تاريخ أي مباراة يدوياً.</p>
     <section class="set-sec">
       <div><label for="scStart">تبدأ الجدولة من تاريخ</label><input id="scStart" type="date"></div>
       <div><label>أيام المباريات (اختر يومين على الأكثر)</label>
@@ -723,11 +734,17 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
     [0,1].forEach(gi=>fixtures(gi).forEach(r=>r.ms.forEach(m=>{if(!validDate(S.dates[m.id])&&validDate(S.dates[`g${gi}r${r.r}`]))S.dates[m.id]=S.dates[`g${gi}r${r.r}`]})));
     rks.forEach(k=>delete S.dates[k]);
   }
-  // order: groups alternate, round by round, then the knockout
+  // a round = one match from each group, so a round fits in one week (two matches, on two days)
+  function groupLine(gi){return fixtures(gi).flatMap(r=>r.ms)}
+  function rounds(){
+    if(!drawDone())return [];
+    const A=groupLine(0),B=groupLine(1),n=Math.max(A.length,B.length),out=[];
+    for(let k=0;k<n;k++)out.push({k,ms:[A[k]||null,B[k]||null]});
+    return out;
+  }
   function matchList(){
-    const out=[];if(!drawDone())return out;
-    const F=[fixtures(0),fixtures(1)];
-    for(let r=0;r<F[0].length;r++)for(let k=0;k<2;k++)for(let gi=0;gi<2;gi++){const m=F[gi][r]&&F[gi][r].ms[k];if(m)out.push({id:m.id,gi,r,tag:`<i>${GN[gi]}</i> · الجولة ${r+1}`,h:m.h,a:m.a})}
+    const out=[];
+    rounds().forEach(r=>r.ms.forEach((m,gi)=>{if(m)out.push({id:m.id,gi,k:r.k,tag:`<i>${GN[gi]}</i> · الجولة ${r.k+1}`,h:m.h,a:m.a})}));
     const K=koTeams();
     KO.forEach(([key,title,sub])=>{const p=K[key];out.push({id:key,ko:true,tag:`<i>${title}</i>`,h:p[0],a:p[1],sub})});
     return out;
@@ -738,8 +755,10 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
   function clashes(){
     const byDay={},byWeek={};scheduled().forEach(m=>{(byDay[m.d]=byDay[m.d]||[]).push(m.id);const w=weekOf(m.d);(byWeek[w]=byWeek[w]||[]).push(m.id)});
     const bad=new Set();let days=0,weeks=0;
-    Object.values(byDay).forEach(l=>{if(l.length>1){days++;l.forEach(i=>bad.add(i))}});
-    Object.values(byWeek).forEach(l=>{if(l.length>2){weeks++;l.forEach(i=>bad.add(i))}});
+    // a clash that only involves matches already played is history, not something to fix
+    const open=l=>l.some(i=>!played(i));
+    Object.values(byDay).forEach(l=>{if(l.length>1&&open(l)){days++;l.forEach(i=>bad.add(i))}});
+    Object.values(byWeek).forEach(l=>{if(l.length>2&&open(l)){weeks++;l.forEach(i=>bad.add(i))}});
     return {bad,days,weeks};
   }
   function matchDateCtl(id,bad){
@@ -763,10 +782,12 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
     const bar=`<div class="mbar">${chip("all","كل المباريات",null)}${chip("today","مباريات اليوم",nToday)}${chip("week","مباريات الأسبوع",nWeek)}${warn}`+
       (canWrite()?`<button class="btn" id="schedBtn" style="margin-inline-start:auto">جدولة تلقائية</button>`:"")+`</div>`;
     if(mFilter==="all"){
-      v.innerHTML=bar+`<div class="two">`+[0,1].map(gi=>`<section class="card"><div class="c-head"><h2>${GN[gi]}</h2><span class="g-badge ${gi?"b2":""}">${gi+1}</span></div><div class="rounds">`+
-        fixtures(gi).map(r=>`<div class="round"><span class="rn">الجولة ${r.r+1}</span><div class="rmatches">`+
-          r.ms.map(m=>mRow(m.id,m.h,m.a,null,matchDateCtl(m.id,C.bad))).join("")+
-          (r.rest?`<span class="rest">يرتاح: ${label(T(r.rest))}</span>`:"")+`</div></div>`).join("")+`</div></section>`).join("")+`</div>`;
+      const cell=m=>m?mRow(m.id,m.h,m.a,null,matchDateCtl(m.id,C.bad)):`<span class="rest">—</span>`;
+      v.innerHTML=bar+`<section class="card rtable"><div class="rt-row rt-head"><span>الجولة</span>`+
+        [0,1].map(gi=>`<span class="rt-g"><span class="g-badge ${gi?"b2":""}">${gi+1}</span>${GN[gi]}</span>`).join("")+`</div>`+
+        rounds().map(r=>{const done=r.ms.every(m=>!m||played(m.id));
+          return `<div class="rt-row ${done?"done":""}"><span class="rt-n">الجولة ${r.k+1}</span>`+r.ms.map((m,gi)=>`<div class="rt-c" data-g="${GN[gi]}">${cell(m)}</div>`).join("")+`</div>`}).join("")+
+        `</section>`;
       return;
     }
     const list=mFilter==="today"?all.filter(m=>m.d===today):all.filter(m=>m.d>=ws&&m.d<=we);
@@ -782,19 +803,27 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
   }
 
   /* ---------- automatic scheduling ---------- */
+  // fills week by week: the selected days in order, never two matches on a day or more than two in a week.
+  // A round (one match per group) is kept inside one week: if a week has room for only one match, the round starts the next week.
   function planSchedule(start,days,onlyUnplayed,withKO){
     const L=matchList().filter(m=>withKO||!m.ko);
     const todo=L.filter(m=>!(onlyUnplayed&&played(m.id)));
     const ids=new Set(todo.map(m=>m.id));
     const keep=matchList().filter(m=>!ids.has(m.id)).map(m=>dateOf(m.id)).filter(Boolean);
     const used=new Set(keep),wk={};keep.forEach(d=>{const w=weekOf(d);wk[w]=(wk[w]||0)+1});
-    const plan={};const d=parseD(start);
-    for(const m of todo){
-      let guard=0;
-      while(guard++<2000){const s=iso(d),w=weekOf(s);if(days.has(d.getDay())&&!used.has(s)&&(wk[w]||0)<2)break;d.setDate(d.getDate()+1)}
-      const s=iso(d);plan[m.id]=s;used.add(s);wk[weekOf(s)]=(wk[weekOf(s)]||0)+1;d.setDate(d.getDate()+1);
+    const plan={},q=todo.slice(),dl=[...days].sort((x,y)=>x-y);
+    const pairKey=m=>m.ko?(m.id==="sf1"||m.id==="sf2"?"sf":"fn"):"r"+m.k;
+    const ws=parseD(weekOf(start));
+    for(let guard=0;q.length&&guard<400;guard++){
+      const w=iso(ws);
+      const slots=dl.map(dw=>{const d=new Date(ws);d.setDate(d.getDate()+dw);return iso(d)}).filter(s=>s>=start&&!used.has(s)).slice(0,Math.max(0,2-(wk[w]||0)));
+      const pairLeft=q.filter(m=>pairKey(m)===pairKey(q[0])).length;
+      if(!(slots.length<2&&pairLeft>=2&&dl.length>=2&&slots.length>0)){
+        for(const s of slots){if(!q.length)break;const m=q.shift();plan[m.id]=s;used.add(s);wk[w]=(wk[w]||0)+1}
+      }
+      ws.setDate(ws.getDate()+7);
     }
-    return {plan,count:todo.length};
+    return {plan,count:Object.keys(plan).length};
   }
   function schedOpts(){
     const days=new Set([...document.querySelectorAll("#scDays input:checked")].map(i=>+i.value));
