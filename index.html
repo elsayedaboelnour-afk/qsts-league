@@ -159,6 +159,64 @@ tr.sent td{background:#fdecee}
 .rmatches{display:flex;flex-direction:column;gap:clamp(3px,.6vh,6px);min-width:0}
 .m{display:grid;grid-template-columns:1fr auto auto auto 1fr;align-items:center;gap:8px;font-weight:700;font-size:clamp(13px,1.9vh,17px)}
 .m.wd{grid-template-columns:8.6em 1fr auto auto auto 1fr}
+/* match cards */
+#v-matches .mbar{position:sticky;top:calc(-1 * clamp(8px,1.6vh,18px));z-index:3;background:var(--bg);padding-block:8px;margin-top:-8px}
+.mbar .prog{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-weight:700;font-size:clamp(12px,1.7vh,15px);margin-inline-start:auto}
+.pbar{width:120px;height:8px;border-radius:99px;background:var(--line);overflow:hidden;display:inline-block}
+.pbar i{display:block;height:100%;background:var(--ok);border-radius:99px}
+.rlist{display:flex;flex-direction:column;gap:clamp(10px,1.6vh,16px)}
+.rnd{display:grid;grid-template-columns:9.5em 1fr;gap:12px;align-items:stretch}
+.rh{display:flex;flex-direction:column;justify-content:center;gap:4px;padding:6px 12px;border-inline-start:4px solid var(--line-2)}
+.rno{font-family:var(--display);font-weight:800;font-size:clamp(17px,2.6vh,24px);color:var(--ink)}
+.rrange{color:var(--muted);font-weight:600;font-size:clamp(11px,1.5vh,13px);line-height:1.4}
+.curtag,.donetag{align-self:flex-start;border-radius:99px;padding:1px 10px;font-weight:800;font-size:12px}
+.curtag{background:var(--maroon);color:#fff}
+.donetag{background:var(--ok-tint);color:var(--ok)}
+.rnd.cur .rh{border-color:var(--maroon)}
+.rnd.cur .rno{color:var(--maroon)}
+.rnd.done .rh{border-color:var(--ok)}
+.rcards{display:grid;grid-template-columns:1fr 1fr;gap:12px;min-width:0}
+.rcards.dayc{grid-template-columns:repeat(auto-fit,minmax(min(560px,100%),1fr))}
+.mc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px;display:flex;flex-direction:column;gap:6px;min-width:0;transition:border-color .2s,box-shadow .2s}
+.mc-meta{display:flex;align-items:center;gap:8px;min-height:26px}
+.mc-meta .gtag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--muted)}
+.mc-meta .gtag i{font-style:normal;color:var(--muted)}
+.gdot{width:8px;height:8px;border-radius:50%;display:inline-block}.gdot.g0{background:var(--maroon)}.gdot.g1{background:var(--indigo)}
+.mc-meta .when{color:var(--muted);font-size:12px;font-weight:600}
+.mc-meta .dt{width:auto;max-width:none;font-size:12px;padding:2px 6px}
+.mc-meta>.pill{margin-inline-start:auto}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:6px;padding:2px 10px;font-weight:800;font-size:12px;letter-spacing:.02em;white-space:nowrap}
+.pill.ft{background:#1e2330;color:#fff}
+.pill.today{background:var(--maroon);color:#fff}
+.pill.next{background:var(--indigo-tint);color:var(--indigo)}
+.pill.late{background:#fff4e5;color:#8a5a00}
+.pill.tbd{background:transparent;color:var(--muted);border:1px dashed var(--line-2)}
+.live{width:7px;height:7px;border-radius:50%;background:#fff;animation:blink 1.2s infinite}
+.mc-body{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px}
+.tm{display:flex;align-items:center;gap:8px;min-width:0}
+.tm.home{justify-content:flex-start}
+.tm.away{flex-direction:row-reverse;justify-content:flex-start}
+.tm .bar{width:5px;align-self:stretch;min-height:28px;border-radius:3px;background:var(--cc);flex:none}
+.tm .tn{font-family:var(--display);font-weight:800;font-size:clamp(16px,2.4vh,22px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.tm .tcode{color:var(--muted);font-size:clamp(11px,1.5vh,13px);font-weight:700;flex:none}
+.tm.lose .tn,.tm.lose .tcode{color:#a3a9bb}
+.tm.lose .bar{opacity:.35}
+.tm.winner .tn{color:var(--ink)}
+.tbdteam .tn{color:var(--muted);font-weight:600;font-size:14px}
+.mid{display:flex;flex-direction:column;align-items:center;gap:2px}
+.score{display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+.score b{min-width:1.6em;height:1.6em;display:grid;place-items:center;border-radius:8px;background:var(--bg);font-size:clamp(20px,3.2vh,30px);font-weight:800;color:#8a90a3}
+.score b.w{background:var(--ink);color:#fff}
+.res-d .score b{background:var(--bg);color:var(--ink)}
+.score .sep{color:var(--muted);font-weight:700}
+.score.edit .sc{width:2.4em;height:2.1em;font-size:clamp(17px,2.5vh,22px)}
+.pens{font-size:11px;color:var(--muted);font-weight:700}
+.vs{background:var(--indigo-tint);color:var(--indigo);border-radius:8px;padding:6px 12px;font-weight:800;font-size:clamp(12px,1.7vh,15px);white-space:nowrap}
+.st-ft{background:#fbfbfc}
+.st-today{border-color:var(--maroon);box-shadow:0 0 0 3px var(--maroon-tint)}
+.st-late{border-color:#f0d29a}
+.st-tbd{border-style:dashed}
+.st-next .vs{background:var(--indigo);color:#fff}
 .rtable{overflow:hidden}
 .rt-row{display:grid;grid-template-columns:6.5em 1fr 1fr;align-items:center;gap:0;border-top:1px solid var(--line)}
 .rt-row>*{padding:clamp(5px,1vh,9px) 14px;min-width:0}
@@ -290,10 +348,17 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
   .two,.fields,.ko,.sc-grid,.cd-grid{grid-template-columns:1fr}
   .round{grid-template-columns:4.2em 1fr}
   .m.wd{grid-template-columns:1fr auto auto auto 1fr}.m.wd .md{grid-column:1/-1}
+  .rnd{grid-template-columns:1fr}.rh{flex-direction:row;align-items:center;flex-wrap:wrap}.rcards{grid-template-columns:1fr}.mbar .prog{margin-inline-start:0}
   .rt-row{grid-template-columns:1fr}.rt-head .rt-g{display:none}.rt-row .rt-c+.rt-c{border-inline-start:0}
   .rt-c::before{content:attr(data-g);display:block;font-size:12px;color:var(--muted);font-weight:700;margin-bottom:4px}
 }
 @media (max-width:560px){.arena{grid-template-columns:1fr}.ball{--sz:52px}.savebox{margin-inline-start:0}}
+@media (max-width:560px){
+  .mc-body{grid-template-columns:1fr auto;grid-template-areas:"h m" "a m";row-gap:8px}
+  .tm.home{grid-area:h}.tm.away{grid-area:a;flex-direction:row}.mid{grid-area:m}
+  .score{flex-direction:column;gap:6px}.score .sep{display:none}
+  .vs{white-space:normal;text-align:center;max-width:7.5em}
+}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 <script type="application/json" id="state">{"v":1,"names":{},"groups":[[],[]],"balls":{},"results":{},"scorers":[]}</script>
@@ -767,41 +832,68 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
     return d?`<small class="dtl">${fmtDay(d)}</small>`:`<span class="none">لم يُحدَّد</span>`;
   }
   let mFilter="all";try{mFilter=sessionStorage.getItem("qsts7-mf")||"all"}catch(e){}
-  function mRow(id,h,a,sub,dcell){
-    const x=res(id),p=played(id),wh=p&&x.h>x.a,wa=p&&x.a>x.h,ready=h&&a;
-    const side=(t,i)=>t?label(T(t)):`<span class="tbd" style="color:var(--muted);font-weight:500">${sub?sub[i]:""}</span>`;
-    return `<div class="m ${dcell!==undefined?"wd":""}">${dcell!==undefined?`<span class="md">${dcell}</span>`:""}<span class="tb ${wh?"win":""}">${side(h,0)}</span>${ready?scInput(id,"h",x.h):"<span></span>"}<span class="dash">–</span>${ready?scInput(id,"a",x.a):"<span></span>"}<span class="ta ${wa?"win":""}">${side(a,1)}</span></div>`;
+  /* ---------- match cards ---------- */
+  const ST={ft:["انتهت","ft"],today:["اليوم","today"],next:["قادمة","next"],late:["بانتظار النتيجة","late"],tbd:["لم يُحدَّد موعدها","tbd"]};
+  function mStatus(id,d){if(played(id))return "ft";if(!d)return "tbd";const t=todayISO();return d===t?"today":d<t?"late":"next"}
+  function shortDay(s){try{return parseD(s).toLocaleDateString("ar-QA-u-nu-latn",{weekday:"long",day:"numeric",month:"long"})}catch(e){return s}}
+  function teamCell(id,fallback,cls){
+    if(!id)return `<div class="tm tbdteam ${cls}"><span class="tn">${fallback||"—"}</span></div>`;
+    const t=T(id),n=nm(t);
+    return `<div class="tm ${cls}" style="--cc:${COLORS[t.ci]}"><i class="bar"></i><span class="tn">${n?esc(n):codeHTML(t)}</span>${n?`<span class="tcode">${codeHTML(t)}</span>`:""}</div>`;
   }
+  function matchCard(m,opt){
+    opt=opt||{};
+    const d=dateOf(m.id),st=mStatus(m.id,d),x=res(m.id),w=canWrite(),ready=m.h&&m.a;
+    const win=st==="ft"?(x.h>x.a?"h":x.a>x.h?"a":"d"):"";
+    const pens=st==="ft"&&x.h===x.a&&Number.isInteger(x.ph)&&Number.isInteger(x.pa)?`<span class="pens">ركلات الترجيح ${x.ph}–${x.pa}</span>`:"";
+    let mid;
+    if(w&&ready)mid=`<div class="score edit">${scInput(m.id,"h",x.h)}<span class="sep">–</span>${scInput(m.id,"a",x.a)}</div>`;
+    else if(st==="ft")mid=`<div class="score"><b class="${win==="h"?"w":""}">${x.h}</b><span class="sep">–</span><b class="${win==="a"?"w":""}">${x.a}</b></div>${pens}`;
+    else mid=`<div class="vs">${d&&!opt.day?shortDay(d):"VS"}</div>`;
+    const [lbl,cls]=ST[st];
+    const meta=`<span class="pill ${cls}">${st==="today"?'<i class="live"></i>':""}${lbl}</span>`+
+      (w?`<input type="date" class="dt ${opt.bad&&opt.bad.has(m.id)?"clash":""}" data-d="${m.id}" value="${d||""}" aria-label="تاريخ المباراة">`:(d&&st==="ft"?`<span class="when">${shortDay(d)}</span>`:""));
+    return `<article class="mc st-${cls} ${win?"res-"+win:""}" data-id="${m.id}">
+      <div class="mc-meta">${opt.tag?`<span class="gtag">${opt.tag}</span>`:""}${meta}</div>
+      <div class="mc-body">${teamCell(m.h,m.sub&&m.sub[0],"home "+(win==="a"?"lose":win==="h"?"winner":""))}<div class="mid">${mid}</div>${teamCell(m.a,m.sub&&m.sub[1],"away "+(win==="h"?"lose":win==="a"?"winner":""))}</div>
+    </article>`;
+  }
+  let scrolledToCur=false;
   function renderMatches(){
     const v=$("v-matches");
     if(!drawDone()){v.innerHTML=emptyView("تظهر المباريات بعد اكتمال القرعة");return}
     const all=scheduled(),today=todayISO(),[ws,we]=weekRange(),C=clashes();
     const nToday=all.filter(m=>m.d===today).length,nWeek=all.filter(m=>m.d>=ws&&m.d<=we).length;
+    const ML=matchList(),nDone=ML.filter(m=>played(m.id)).length;
     const chip=(k,t,n)=>`<button class="chipf" data-f="${k}" aria-pressed="${mFilter===k}">${t}${n===null?"":` <b>${n}</b>`}</button>`;
     const warn=canWrite()&&(C.days||C.weeks)?`<span class="warnbar">تعارض في المواعيد: ${C.days?C.days+" يوم فيه أكثر من مباراة":""}${C.days&&C.weeks?" · ":""}${C.weeks?C.weeks+" أسبوع فيه أكثر من مباراتين":""}</span>`:"";
-    const bar=`<div class="mbar">${chip("all","كل المباريات",null)}${chip("today","مباريات اليوم",nToday)}${chip("week","مباريات الأسبوع",nWeek)}${warn}`+
-      (canWrite()?`<button class="btn" id="schedBtn" style="margin-inline-start:auto">جدولة تلقائية</button>`:"")+`</div>`;
+    const prog=`<span class="prog"><span class="pbar"><i style="width:${ML.length?Math.round(nDone/ML.length*100):0}%"></i></span>انتهت ${nDone} من ${ML.length} مباراة</span>`;
+    const bar=`<div class="mbar">${chip("all","كل المباريات",null)}${chip("today","مباريات اليوم",nToday)}${chip("week","مباريات الأسبوع",nWeek)}${warn}${prog}`+
+      (canWrite()?`<button class="btn" id="schedBtn">جدولة تلقائية</button>`:"")+`</div>`;
+    const tagOf=m=>m.tag;
     if(mFilter==="all"){
-      const cell=m=>m?mRow(m.id,m.h,m.a,null,matchDateCtl(m.id,C.bad)):`<span class="rest">—</span>`;
-      v.innerHTML=bar+`<section class="card rtable"><div class="rt-row rt-head"><span>الجولة</span>`+
-        [0,1].map(gi=>`<span class="rt-g"><span class="g-badge ${gi?"b2":""}">${gi+1}</span>${GN[gi]}</span>`).join("")+`</div>`+
-        rounds().map(r=>{const done=r.ms.every(m=>!m||played(m.id));
-          return `<div class="rt-row ${done?"done":""}"><span class="rt-n">الجولة ${r.k+1}</span>`+r.ms.map((m,gi)=>`<div class="rt-c" data-g="${GN[gi]}">${cell(m)}</div>`).join("")+`</div>`}).join("")+
-        `</section>`;
+      const R=rounds(),cur=R.findIndex(r=>r.ms.some(m=>m&&!played(m.id)));
+      v.innerHTML=bar+`<div class="rlist">`+R.map(r=>{
+        const ds=r.ms.map(m=>m&&dateOf(m.id)).filter(Boolean).sort();
+        const range=ds.length?(ds[0]===ds[ds.length-1]?shortDay(ds[0]):`${shortDay(ds[0])} – ${shortDay(ds[ds.length-1])}`):"";
+        const done=r.ms.every(m=>!m||played(m.id)),isCur=r.k===cur;
+        return `<section class="rnd ${done?"done":""} ${isCur?"cur":""}" ${isCur?'id="curRound"':""}>
+          <header class="rh"><span class="rno">الجولة ${r.k+1}</span>${isCur?'<span class="curtag">الجولة الحالية</span>':done?'<span class="donetag">مكتملة</span>':""}<span class="rrange">${range}</span></header>
+          <div class="rcards">${r.ms.map((m,gi)=>m?matchCard(Object.assign({},m,{h:m.h,a:m.a}),{tag:`<i class="gdot g${gi}"></i>${GN[gi]}`,bad:C.bad}):"").join("")}</div></section>`}).join("")+`</div>`;
+      if(!scrolledToCur){scrolledToCur=true;const c=$("curRound");if(c&&cur>0)setTimeout(()=>{try{c.scrollIntoView({block:"start",behavior:"smooth"})}catch(e){}},300)}
       return;
     }
     const list=mFilter==="today"?all.filter(m=>m.d===today):all.filter(m=>m.d>=ws&&m.d<=we);
     if(!list.length){
       const next=all.find(m=>m.d>today);
       v.innerHTML=bar+`<div class="nodays"><img src="${BALL}" alt="">${mFilter==="today"?"لا توجد مباريات اليوم":"لا توجد مباريات هذا الأسبوع"}`+
-        (next?`<div style="margin-top:8px">أقرب مباراة: <b>${fmtDay(next.d)}</b></div>`:(all.length?"":`<div style="margin-top:8px;font-size:.85em">لم تُحدَّد مواعيد المباريات بعد</div>`))+`</div>`;
+        (next?`<div style="margin-top:8px">أقرب مباراة: <b>${shortDay(next.d)}</b></div>`:(all.length?"":`<div style="margin-top:8px;font-size:.85em">لم تُحدَّد مواعيد المباريات بعد</div>`))+`</div>`;
       return;
     }
     const byDay={};list.forEach(m=>(byDay[m.d]=byDay[m.d]||[]).push(m));
-    v.innerHTML=bar+`<div class="days">`+Object.keys(byDay).sort().map(d=>`<section class="card day ${d===today?"today":""}"><div class="c-head"><h2>${fmtDay(d)}</h2><span class="g-count">${d===today?"اليوم":byDay[d].length>1?byDay[d].length+" مباريات":"مباراة واحدة"}</span></div><div class="dlist">`+
-      byDay[d].map(m=>`<div class="dm"><span class="gtag">${m.tag}</span>${mRow(m.id,m.h,m.a,m.sub)}</div>`).join("")+`</div></section>`).join("")+`</div>`;
+    v.innerHTML=bar+`<div class="rlist">`+Object.keys(byDay).sort().map(d=>`<section class="rnd ${d===today?"cur":""}"><header class="rh"><span class="rno">${shortDay(d)}</span>${d===today?'<span class="curtag">اليوم</span>':""}</header>
+      <div class="rcards dayc">${byDay[d].map(m=>matchCard(m,{tag:tagOf(m),bad:C.bad,day:true})).join("")}</div></section>`).join("")+`</div>`;
   }
-
   /* ---------- automatic scheduling ---------- */
   // fills week by week: the selected days in order, never two matches on a day or more than two in a week.
   // A round (one match per group) is kept inside one week: if a week has room for only one match, the round starts the next week.
@@ -864,7 +956,7 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
   document.addEventListener("change",e=>{
     const el=e.target;if(!el.classList||!el.classList.contains("dt")||!canWrite())return;
     migrateDates();const k=el.dataset.d;if(validDate(el.value))S.dates[k]=el.value;else delete S.dates[k];
-    changed();if(tab==="matches")renderMatches();
+    changed();if(tab==="matches"){const v=$("v-matches"),top=v.scrollTop;renderMatches();v.scrollTop=top}
   });
   function renderTable(){
     const v=$("v-table");
@@ -901,13 +993,12 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
     if(Object.keys(x).length)S.results[id]=x;else delete S.results[id];
     changed();
     if(e.type!=="change")return;
-    if(tab==="matches"){
-      const row=el.closest(".m"),r=S.results[id]||{},p=played(id);
-      if(row){row.querySelector(".tb").classList.toggle("win",p&&r.h>r.a);row.querySelector(".ta").classList.toggle("win",p&&r.a>r.h)}
-    }else if(tab==="ko"){
+    if(tab==="matches"||tab==="ko"){
       setTimeout(()=>{
         const f=document.activeElement,fm=f&&f.dataset&&f.dataset.m,fs=f&&f.dataset&&f.dataset.s;
-        renderKO();
+        const v=$("v-"+tab),top=v.scrollTop;
+        if(tab==="ko")renderKO();else renderMatches();
+        v.scrollTop=top;
         if(fm){const n=document.querySelector(`.sc[data-m="${fm}"][data-s="${fs}"]`);if(n)n.focus()}
       },0);
     }
