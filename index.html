@@ -119,7 +119,7 @@ main{min-height:0;position:relative;
 /* matches view */
 .two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,1.6vw,24px);min-height:100%}
 .rounds{padding:4px 16px 10px}
-.round{display:grid;grid-template-columns:9.5em 1fr;gap:6px 12px;align-items:center;padding:clamp(4px,.9vh,8px) 0;border-top:1px solid var(--line)}
+.round{display:grid;grid-template-columns:4.6em 1fr;gap:6px 12px;align-items:center;padding:clamp(4px,.9vh,8px) 0;border-top:1px solid var(--line)}
 .round:first-child{border-top:0}
 .rn{font-weight:700;color:var(--maroon);font-size:clamp(13px,1.8vh,16px);display:flex;flex-direction:column;gap:3px}
 .rn small{color:var(--muted);font-weight:600;font-size:.82em}
@@ -158,6 +158,19 @@ tr.sent td{background:#fdecee}
 .ro .stepper .cst{display:none}
 .rmatches{display:flex;flex-direction:column;gap:clamp(3px,.6vh,6px);min-width:0}
 .m{display:grid;grid-template-columns:1fr auto auto auto 1fr;align-items:center;gap:8px;font-weight:700;font-size:clamp(13px,1.9vh,17px)}
+.m.wd{grid-template-columns:8.6em 1fr auto auto auto 1fr}
+.md{min-width:0}.md .dt{max-width:100%}
+.md small{font-size:.8em}
+.md .none{color:var(--line-2);font-weight:600;font-size:.8em}
+.dt.clash{border-color:#d7263d;background:#fdecee;color:#a3172a}
+.warnbar{background:#fff4e5;border:1px solid var(--gold);color:#8a5a00;border-radius:10px;padding:6px 12px;font-weight:700;font-size:13px}
+.daypick{display:flex;flex-wrap:wrap;gap:8px}
+.daypick label{display:flex;align-items:center;gap:6px;border:1px solid var(--line-2);border-radius:10px;padding:8px 12px;cursor:pointer;font-weight:700;color:var(--ink);background:var(--bg)}
+.daypick label:has(input:checked){border-color:var(--maroon);background:var(--card);box-shadow:0 0 0 2px var(--maroon-tint)}
+.daypick input{width:auto}
+.chk{display:flex;align-items:center;gap:8px;font-weight:600;color:var(--ink)!important}
+.chk input{width:auto!important}
+.prev{background:var(--indigo-tint);color:var(--indigo);border-radius:10px;padding:10px 12px;font-weight:700;font-size:14px}
 .m .ta{text-align:left;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .m .tb{text-align:right;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .m.played{color:var(--ink)}.m .dash{color:var(--muted)}
@@ -266,7 +279,8 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
   .view{height:auto;overflow:visible}
   .arena{grid-template-columns:1fr 1fr;height:auto}.stage{grid-column:1/-1;order:-1}.reveal{min-height:220px}.slot{min-height:56px}
   .two,.fields,.ko,.sc-grid,.cd-grid{grid-template-columns:1fr}
-  .round{grid-template-columns:7.5em 1fr}
+  .round{grid-template-columns:4.2em 1fr}
+  .m.wd{grid-template-columns:1fr auto auto auto 1fr}.m.wd .md{grid-column:1/-1}
 }
 @media (max-width:560px){.arena{grid-template-columns:1fr}.ball{--sz:52px}.savebox{margin-inline-start:0}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -408,6 +422,23 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
       <div class="msg" id="bkMsg"></div>
     </section>
     <div class="row"><button class="btn primary" type="button" id="setClose">إغلاق</button><button class="btn" type="button" id="logout">تسجيل الخروج</button></div>
+  </div>
+</div>
+<div class="overlay" id="schedBox" hidden role="dialog" aria-modal="true" aria-labelledby="scTitle">
+  <div class="panel" style="width:min(640px,100%)">
+    <h2 id="scTitle">جدولة المباريات تلقائياً</h2>
+    <p>مباراة واحدة في اليوم، وبحد أقصى مباراتين في الأسبوع. بعد الجدولة يمكنك تعديل تاريخ أي مباراة يدوياً.</p>
+    <section class="set-sec">
+      <div><label for="scStart">تبدأ الجدولة من تاريخ</label><input id="scStart" type="date"></div>
+      <div><label>أيام المباريات (اختر يومين على الأكثر)</label>
+        <div class="daypick" id="scDays">
+          <label><input type="checkbox" value="0">الأحد</label><label><input type="checkbox" value="1">الاثنين</label><label><input type="checkbox" value="2">الثلاثاء</label><label><input type="checkbox" value="3">الأربعاء</label><label><input type="checkbox" value="4">الخميس</label>
+        </div></div>
+      <label class="chk"><input type="checkbox" id="scOnly" checked>إعادة جدولة المباريات التي لم تُلعب فقط (المباريات المنتهية تبقى في موعدها)</label>
+      <label class="chk"><input type="checkbox" id="scKO" checked>تضمين المربع الذهبي والنهائي بعد دور المجموعات</label>
+      <div class="prev" id="scPrev"></div>
+    </section>
+    <div class="row"><button class="btn primary" type="button" id="scGo">جدولة</button><button class="btn" type="button" id="scCancel">إلغاء</button></div>
   </div>
 </div>
 <canvas id="confetti"></canvas>
@@ -683,31 +714,58 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
   }
   const KO=[["sf1","نصف النهائي الأول",["أول المجموعة الأولى","ثاني المجموعة الثانية"]],["sf2","نصف النهائي الثاني",["أول المجموعة الثانية","ثاني المجموعة الأولى"]],
     ["third","مباراة المركز الثالث",["الخاسر من نصف النهائي الأول","الخاسر من نصف النهائي الثاني"]],["fin","المباراة النهائية",["الفائز من نصف النهائي الأول","الفائز من نصف النهائي الثاني"]]];
-  function scheduled(){
-    const out=[];
-    if(drawDone())[0,1].forEach(gi=>fixtures(gi).forEach(r=>{const d=S.dates[`g${gi}r${r.r}`];if(validDate(d))r.ms.forEach(m=>out.push({d,tag:`<i>${GN[gi]}</i> · الجولة ${r.r+1}`,id:m.id,h:m.h,a:m.a}))}));
+  // every match has its own date; older data kept one date per round, used as a fallback
+  const roundKey=id=>{const m=/^(g\dr\d)m\d$/.exec(id);return m?m[1]:null};
+  function dateOf(id){const d=S.dates[id];if(validDate(d))return d;const rk=roundKey(id);return rk&&validDate(S.dates[rk])?S.dates[rk]:null}
+  function migrateDates(){
+    if(!drawDone())return;
+    const rks=Object.keys(S.dates).filter(k=>/^g\dr\d$/.test(k));if(!rks.length)return;
+    [0,1].forEach(gi=>fixtures(gi).forEach(r=>r.ms.forEach(m=>{if(!validDate(S.dates[m.id])&&validDate(S.dates[`g${gi}r${r.r}`]))S.dates[m.id]=S.dates[`g${gi}r${r.r}`]})));
+    rks.forEach(k=>delete S.dates[k]);
+  }
+  // order: groups alternate, round by round, then the knockout
+  function matchList(){
+    const out=[];if(!drawDone())return out;
+    const F=[fixtures(0),fixtures(1)];
+    for(let r=0;r<F[0].length;r++)for(let k=0;k<2;k++)for(let gi=0;gi<2;gi++){const m=F[gi][r]&&F[gi][r].ms[k];if(m)out.push({id:m.id,gi,r,tag:`<i>${GN[gi]}</i> · الجولة ${r+1}`,h:m.h,a:m.a})}
     const K=koTeams();
-    KO.forEach(([key,title,sub])=>{const d=S.dates[key];if(validDate(d)){const p=K[key];out.push({d,tag:`<i>${title}</i>`,id:key,h:p[0],a:p[1],sub})}});
-    return out.sort((x,y)=>x.d.localeCompare(y.d));
+    KO.forEach(([key,title,sub])=>{const p=K[key];out.push({id:key,ko:true,tag:`<i>${title}</i>`,h:p[0],a:p[1],sub})});
+    return out;
+  }
+  function scheduled(){return matchList().map(m=>Object.assign({d:dateOf(m.id)},m)).filter(m=>m.d).sort((x,y)=>x.d.localeCompare(y.d))}
+  const parseD=s=>{const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
+  const weekOf=s=>{const d=parseD(s);d.setDate(d.getDate()-d.getDay());return iso(d)};
+  function clashes(){
+    const byDay={},byWeek={};scheduled().forEach(m=>{(byDay[m.d]=byDay[m.d]||[]).push(m.id);const w=weekOf(m.d);(byWeek[w]=byWeek[w]||[]).push(m.id)});
+    const bad=new Set();let days=0,weeks=0;
+    Object.values(byDay).forEach(l=>{if(l.length>1){days++;l.forEach(i=>bad.add(i))}});
+    Object.values(byWeek).forEach(l=>{if(l.length>2){weeks++;l.forEach(i=>bad.add(i))}});
+    return {bad,days,weeks};
+  }
+  function matchDateCtl(id,bad){
+    const d=dateOf(id);
+    if(canWrite())return `<input type="date" class="dt ${bad.has(id)?"clash":""}" data-d="${id}" value="${d||""}" aria-label="تاريخ المباراة" title="${bad.has(id)?"تعارض: أكثر من مباراة في اليوم أو أكثر من مباراتين في الأسبوع":""}">`;
+    return d?`<small class="dtl">${fmtDay(d)}</small>`:`<span class="none">لم يُحدَّد</span>`;
   }
   let mFilter="all";try{mFilter=sessionStorage.getItem("qsts7-mf")||"all"}catch(e){}
-  function mRow(id,h,a,sub){
+  function mRow(id,h,a,sub,dcell){
     const x=res(id),p=played(id),wh=p&&x.h>x.a,wa=p&&x.a>x.h,ready=h&&a;
     const side=(t,i)=>t?label(T(t)):`<span class="tbd" style="color:var(--muted);font-weight:500">${sub?sub[i]:""}</span>`;
-    return `<div class="m"><span class="tb ${wh?"win":""}">${side(h,0)}</span>${ready?scInput(id,"h",x.h):"<span></span>"}<span class="dash">–</span>${ready?scInput(id,"a",x.a):"<span></span>"}<span class="ta ${wa?"win":""}">${side(a,1)}</span></div>`;
+    return `<div class="m ${dcell!==undefined?"wd":""}">${dcell!==undefined?`<span class="md">${dcell}</span>`:""}<span class="tb ${wh?"win":""}">${side(h,0)}</span>${ready?scInput(id,"h",x.h):"<span></span>"}<span class="dash">–</span>${ready?scInput(id,"a",x.a):"<span></span>"}<span class="ta ${wa?"win":""}">${side(a,1)}</span></div>`;
   }
   function renderMatches(){
     const v=$("v-matches");
     if(!drawDone()){v.innerHTML=emptyView("تظهر المباريات بعد اكتمال القرعة");return}
-    const all=scheduled(),today=todayISO(),[ws,we]=weekRange();
+    const all=scheduled(),today=todayISO(),[ws,we]=weekRange(),C=clashes();
     const nToday=all.filter(m=>m.d===today).length,nWeek=all.filter(m=>m.d>=ws&&m.d<=we).length;
     const chip=(k,t,n)=>`<button class="chipf" data-f="${k}" aria-pressed="${mFilter===k}">${t}${n===null?"":` <b>${n}</b>`}</button>`;
-    const bar=`<div class="mbar">${chip("all","كل المباريات",null)}${chip("today","مباريات اليوم",nToday)}${chip("week","مباريات الأسبوع",nWeek)}`+
-      (canWrite()?`<span class="hint">حدّد تاريخ كل جولة من خانة التاريخ تحت رقمها</span>`:"")+`</div>`;
+    const warn=canWrite()&&(C.days||C.weeks)?`<span class="warnbar">تعارض في المواعيد: ${C.days?C.days+" يوم فيه أكثر من مباراة":""}${C.days&&C.weeks?" · ":""}${C.weeks?C.weeks+" أسبوع فيه أكثر من مباراتين":""}</span>`:"";
+    const bar=`<div class="mbar">${chip("all","كل المباريات",null)}${chip("today","مباريات اليوم",nToday)}${chip("week","مباريات الأسبوع",nWeek)}${warn}`+
+      (canWrite()?`<button class="btn" id="schedBtn" style="margin-inline-start:auto">جدولة تلقائية</button>`:"")+`</div>`;
     if(mFilter==="all"){
       v.innerHTML=bar+`<div class="two">`+[0,1].map(gi=>`<section class="card"><div class="c-head"><h2>${GN[gi]}</h2><span class="g-badge ${gi?"b2":""}">${gi+1}</span></div><div class="rounds">`+
-        fixtures(gi).map(r=>`<div class="round"><span class="rn">الجولة ${r.r+1}${dateCtl(`g${gi}r${r.r}`)}</span><div class="rmatches">`+
-          r.ms.map(m=>mRow(m.id,m.h,m.a)).join("")+
+        fixtures(gi).map(r=>`<div class="round"><span class="rn">الجولة ${r.r+1}</span><div class="rmatches">`+
+          r.ms.map(m=>mRow(m.id,m.h,m.a,null,matchDateCtl(m.id,C.bad))).join("")+
           (r.rest?`<span class="rest">يرتاح: ${label(T(r.rest))}</span>`:"")+`</div></div>`).join("")+`</div></section>`).join("")+`</div>`;
       return;
     }
@@ -719,16 +777,64 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
       return;
     }
     const byDay={};list.forEach(m=>(byDay[m.d]=byDay[m.d]||[]).push(m));
-    v.innerHTML=bar+`<div class="days">`+Object.keys(byDay).sort().map(d=>`<section class="card day ${d===today?"today":""}"><div class="c-head"><h2>${fmtDay(d)}</h2><span class="g-count">${d===today?"اليوم":byDay[d].length+" مباريات"}</span></div><div class="dlist">`+
+    v.innerHTML=bar+`<div class="days">`+Object.keys(byDay).sort().map(d=>`<section class="card day ${d===today?"today":""}"><div class="c-head"><h2>${fmtDay(d)}</h2><span class="g-count">${d===today?"اليوم":byDay[d].length>1?byDay[d].length+" مباريات":"مباراة واحدة"}</span></div><div class="dlist">`+
       byDay[d].map(m=>`<div class="dm"><span class="gtag">${m.tag}</span>${mRow(m.id,m.h,m.a,m.sub)}</div>`).join("")+`</div></section>`).join("")+`</div>`;
   }
+
+  /* ---------- automatic scheduling ---------- */
+  function planSchedule(start,days,onlyUnplayed,withKO){
+    const L=matchList().filter(m=>withKO||!m.ko);
+    const todo=L.filter(m=>!(onlyUnplayed&&played(m.id)));
+    const ids=new Set(todo.map(m=>m.id));
+    const keep=matchList().filter(m=>!ids.has(m.id)).map(m=>dateOf(m.id)).filter(Boolean);
+    const used=new Set(keep),wk={};keep.forEach(d=>{const w=weekOf(d);wk[w]=(wk[w]||0)+1});
+    const plan={};const d=parseD(start);
+    for(const m of todo){
+      let guard=0;
+      while(guard++<2000){const s=iso(d),w=weekOf(s);if(days.has(d.getDay())&&!used.has(s)&&(wk[w]||0)<2)break;d.setDate(d.getDate()+1)}
+      const s=iso(d);plan[m.id]=s;used.add(s);wk[weekOf(s)]=(wk[weekOf(s)]||0)+1;d.setDate(d.getDate()+1);
+    }
+    return {plan,count:todo.length};
+  }
+  function schedOpts(){
+    const days=new Set([...document.querySelectorAll("#scDays input:checked")].map(i=>+i.value));
+    return {start:$("scStart").value,days,only:$("scOnly").checked,ko:$("scKO").checked};
+  }
+  function schedPreview(){
+    const o=schedOpts(),p=$("scPrev");
+    if(!validDate(o.start)){p.textContent="اختر تاريخ البداية";$("scGo").disabled=true;return}
+    if(!o.days.size){p.textContent="اختر يوماً واحداً على الأقل";$("scGo").disabled=true;return}
+    const {plan,count}=planSchedule(o.start,o.days,o.only,o.ko),ds=Object.values(plan).sort();
+    $("scGo").disabled=!count;
+    p.textContent=count?`ستُجدوَل ${count} مباراة، من ${fmtDay(ds[0])} إلى ${fmtDay(ds[ds.length-1])}`:"لا توجد مباريات لجدولتها";
+  }
+  document.addEventListener("click",e=>{
+    if(!(e.target.closest&&e.target.closest("#schedBtn"))||!canWrite())return;
+    if(!$("scStart").value)$("scStart").value=todayISO();
+    if(!document.querySelector("#scDays input:checked"))["0","3"].forEach(v=>{document.querySelector(`#scDays input[value="${v}"]`).checked=true});
+    schedPreview();$("schedBox").hidden=false;
+  });
+  document.addEventListener("change",e=>{
+    const t=e.target;if(!t.closest||!t.closest("#schedBox"))return;
+    if(t.closest("#scDays")&&t.checked&&document.querySelectorAll("#scDays input:checked").length>2){t.checked=false;toast("اختر يومين على الأكثر")}
+    schedPreview();
+  });
+  $("scCancel").onclick=()=>{$("schedBox").hidden=true};
+  $("schedBox").addEventListener("click",e=>{if(e.target===$("schedBox"))$("schedBox").hidden=true});
+  $("scGo").onclick=()=>{
+    const o=schedOpts();if(!validDate(o.start)||!o.days.size)return;
+    migrateDates();
+    const {plan,count}=planSchedule(o.start,o.days,o.only,o.ko);
+    Object.assign(S.dates,plan);
+    $("schedBox").hidden=true;changed();mFilter="all";renderMatches();toast(`تمت جدولة ${count} مباراة`);
+  };
   document.addEventListener("click",e=>{
     const c=e.target.closest&&e.target.closest(".chipf");if(!c)return;
     mFilter=c.dataset.f;try{sessionStorage.setItem("qsts7-mf",mFilter)}catch(err){}renderMatches();
   });
   document.addEventListener("change",e=>{
     const el=e.target;if(!el.classList||!el.classList.contains("dt")||!canWrite())return;
-    const k=el.dataset.d;if(validDate(el.value))S.dates[k]=el.value;else delete S.dates[k];
+    migrateDates();const k=el.dataset.d;if(validDate(el.value))S.dates[k]=el.value;else delete S.dates[k];
     changed();if(tab==="matches")renderMatches();
   });
   function renderTable(){
@@ -882,7 +988,7 @@ td.gl{font-weight:800;color:var(--maroon);font-size:clamp(17px,2.6vh,24px)}
     if(t==="matches")renderMatches();if(t==="table")renderTable();if(t==="ko")renderKO();if(t==="scorers")renderScorers();if(t==="cards")renderCards();
     refreshDraw();
   }
-  function renderAll(){if(S.subtitle)$("subTitle").textContent=S.subtitle;if(!busy)renderDraw();showTab(tab);updateStatus()}
+  function renderAll(){migrateDates();if(S.subtitle)$("subTitle").textContent=S.subtitle;if(!busy)renderDraw();showTab(tab);updateStatus()}
 
   /* ---------- names ---------- */
   $("namesBtn").onclick=()=>{
